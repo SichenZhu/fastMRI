@@ -1,7 +1,7 @@
 # fastMRI
 Fast MRI Reconstruction via Deep Learning
 
-This is a modified version of [fastMRI](https://github.com/facebookresearch/fastMRI). It fixed some errors during the running process. 
+This is a modified version of [fastMRI](https://github.com/facebookresearch/fastMRI). It fixed some errors that emerged during the running process. 
 Some comparisons are made in order to test the influence of the following parameters on the model: 
 - subsampling mask type (equispaced vs random)
 - acceleration rate (single acceleration rate vs a mixture of rates)
