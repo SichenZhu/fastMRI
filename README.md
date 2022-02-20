@@ -3,7 +3,7 @@ Fast MRI Reconstruction via Deep Learning
 
 This repo contains modifications to [fastMRI](https://github.com/facebookresearch/fastMRI). It fixed some errors that emerged during the running process.
 
-Some extra experiements are performed in order to test the influence of the following parameters on the [fastMRI](https://github.com/facebookresearch/fastMRI) model: 
+Some extra experiements are performed in order to test the influence of the following parameters using the [fastMRI](https://github.com/facebookresearch/fastMRI) model on [NYU fastMRI dataset](https://fastmri.med.nyu.edu/): 
 - subsampling mask type (equispaced vs random)
 - acceleration rate (single acceleration rate vs a mixture of rates)
 - training data type (single specific type of MR exam from FLAIR/T1/T2/T1POST/T1PRE vs a mixture of all five exams)
