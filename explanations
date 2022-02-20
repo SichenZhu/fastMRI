@@ -1,0 +1,107 @@
+DL methods
+Main reference: https://github.com/facebookresearch/fastMRI/tree/main/fastmri_examples/varnet
+
+-------------------------------------------------------------------------------------
+File explanation: 
+
+"varnet/" folder in "modifications_of_original_fastMRI/": modified version of "fastMRI/fastmri_examples/varnet"
+Complete training python script has been modified (search "modification" in varnet_brain_leaderboard_20201111.py)
+-------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------
+Training the model on High Performance Computing:
+
+Shell script: modifications_of_original_fastMRI/train-job.sh
+	Arguments:
+		--mode train 
+		--mask_type equispaced (or random)
+		--center_fractions [0.08, 0.04]
+		--accelerations [4, 8]
+	Attention:
+		accelerations and center_fractions must be specified at the same time
+		--accelerations [4] + --center_fractions [0.08]
+		or --accelerations [8] + --center_fractions [0.04]
+		
+		
+Python script: 
+	modifications_of_original_fastMRI/varnet/varnet_brain_leaderboard_20201111.py
+	
+	Parameters that could be modified in this training python file:
+		"num_gpus" (line 89)
+		"monitor" - loss function during the training (line 179)
+		"max_epochs" (line 163)
+
+Need to create before running the python script: 
+	fastMRI/yaml/path_dirs.yaml (i.e. see modifications_of_original_fastMRI/path_dirs.yaml)
+
+Then add the absolute value of this .yaml file to line 87 in modifications_of_original_fastMRI/varnet/varnet_brain_leaderboard_20201111.py
+
+Output would be in "log_path" in .yaml file that you have just created.
+The parameters for the model are saved in log_path/varnet/brain_leaderboard/checkpoints/xxx.ckpt
+-------------------------------------------------------------------------------------
+
+
+
+-------------------------------------------------------------------------------------
+Reconstruction:
+Using pre-trained model: 
+	python modifications_of_original_fastMRI/varnet/run_pretrained_varnet_inference.py
+	
+	Parameters:
+		--challenge
+		--data_path
+		--output_path
+
+Using self-trained model:
+	python modifications_of_original_fastMRI/varnet/run_trained_varnet_inference.py
+	
+	Modification (see code): This modification is to read in the xxxx.ckpt file that is saved from training process. 
+
+	Parameters:
+		--challenge
+		--data_path
+		--output_path
+		--state_dict_file "absolute path to xxxx.ckpt file"
+
+Output: in output_path/reconstructions
+-------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------
+To visualize the results:
+Reference: sample_experiments/compare_epochs.ipynb (as an example)
+Replace the file loading part
+For ground truth data and subsampled data: IFFT - taking absolute value - rss
+For reconstructed data: it's already combined into one image.
+-------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------
+How to subsample ground truth data for reconstruction?
+Reference: sample_experiments/Subsample.ipynb
+-------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------
+For bart reconstruction (originally in "fastMRI/fastmri_examples/cs"):
+
+First following the instructions on this website to install BartToolBox: 
+https://mrirecon.github.io/bart/
+
+Then to run the code (plz using python version <=3.7 otherwise there might be some problem for multiprocessing in the code)
+Using the command: 
+	python3.7 modifications_of_original_fastMRI/run_bart.py \
+	--challenge "multicoil" \
+	--data_path ./input/ \
+	--output_path ./output/ \
+	--mask_type "equispaced" \
+	--split test \
+	--num_procs 4
+
+Attention: 
+--data_path "./input" must containing "multicoil_test/" subfolder and all the datasets that need to be reconstructed are in the "./input/multicoil_test/" 
+
+--num_procs means the number of CPUs that share the multiprocessing job
+
+For MacOS system, everytime please create a new input folder and store the .h5 in it. Otherwise plz remove .DS_Store/ that is created by MacOS in the old input folder. If not doing so, the code would go wrong.
+

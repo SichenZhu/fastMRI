@@ -1,0 +1,4 @@
+# !!! absolute path is highly recommended !!!
+
+brain_path: "./dataset/"  # this is the path to dataset; if knee, use "knee_path" as key; this folder must contain multicoil_test(could be empty), multicoil_train and multicoil_val three subfolders
+log_path: "./output/"  # this is the path to store output.
