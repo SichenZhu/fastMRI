@@ -7,4 +7,4 @@ Some comparisons are made in order to test the influence of the following parame
 - acceleration rate (single acceleration rate vs a mixture of rates)
 - training data type (single specific type of MR exam from FLAIR/T1/T2/T1POST/T1PRE vs a mixture of all five exams)
 - consistency between anatomical areas of training data and test data (trained the model on knee images and applied the model to brain data reconstructions).
-The results of comparisons are showned [here](presentation.pdf)
+The results of comparisons are showned [here](presentation.pdf).
